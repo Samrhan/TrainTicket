@@ -1,0 +1,61 @@
+<div id="travel-selector">
+
+  <mat-card class="example-card">
+    <mat-card-title>Rechercher un train</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="form" class="form-group" (ngSubmit)="searchTravel()">
+        <mat-form-field appearance="outline">
+          <mat-label>Départ</mat-label>
+          <input matInput formControlName="departure" [matAutocomplete]="departure">
+          <mat-error *ngIf="form.controls['departure'].hasError('incorrect')">
+            Sélectionnez une gare
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Arrivée</mat-label>
+          <input matInput formControlName="arrival" [matAutocomplete]="arrival">
+          <mat-error *ngIf="form.controls['arrival'].hasError('incorrect')">
+            Sélectionnez une gare
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput formControlName="date" [min]="minDate" [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Heure de départ</mat-label>
+          <input matInput formControlName="time" [matAutocomplete]="time">
+          <mat-error *ngIf="form.controls['time'].hasError('incorrect')">
+            Sélectionnez une heure de départ
+          </mat-error>
+        </mat-form-field>
+        <mat-card-actions>
+          <button mat-button type="submit">RECHERCHER</button>
+        </mat-card-actions>
+      </form>
+      <app-journey *ngFor="let journey of journeys" [journey]="journey"></app-journey>
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-progress-bar #progressBar mode="determinate" [value]="progressBarValue"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+</div>
+
+
+<mat-autocomplete #departure="matAutocomplete" [displayWith]="displayWith">
+  <mat-option *ngFor="let station of departureStations" [value]="station">
+    {{station.name}}
+  </mat-option>
+</mat-autocomplete>
+<mat-autocomplete #arrival="matAutocomplete" [displayWith]="displayWith">
+  <mat-option *ngFor="let station of arrivalStations" [value]="station">
+    {{station.name}}
+  </mat-option>
+</mat-autocomplete>
+<mat-autocomplete #time="matAutocomplete" [displayWith]="displayWith">
+  <mat-option *ngFor="let hour of hoursList" [value]="hour">
+    {{hour.name}}
+  </mat-option>
+</mat-autocomplete>

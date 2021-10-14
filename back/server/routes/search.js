@@ -34,9 +34,11 @@ function convertToHHMM(seconds) {
 module.exports = async (req, res) => {
     let from = req.params.from;
     let to = req.params.to
+    let datetime = req.params.datetime
+    console.log(datetime)
     from = encodeURIComponent(from)
     to = encodeURIComponent(to)
-    const result = await axios.get(`https://${process.env.SNCF_TOKEN}@api.sncf.com/v1/coverage/sncf/journeys?from=${from}&to=${to}`)
+    const result = await axios.get(`https://${process.env.SNCF_TOKEN}@api.sncf.com/v1/coverage/sncf/journeys?from=${from}&to=${to}&datetime=${datetime}`)
     const journeys = []
     for (let journey of result.data.journeys) {
         let tmp_journey = {

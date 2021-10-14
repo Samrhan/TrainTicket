@@ -30,6 +30,6 @@ router.get("/me", async (req, res) => require('./me.js')(req, res, client))
 router.get('/test', async (req, res) => {
     res.status(200).json({message: "ok"});
 })
-router.post('/search/:from/:to', async (req,res)=>require('./search.js')(req,res))
-router.get("/trainstation", async (req, res) => require('./trainstation.js')(req, res))
+router.get('/search/:from/:to/:datetime?', async (req,res)=>require('./search.js')(req,res))
+router.get("/trainstation/:query?", async (req, res) => require('./trainstation.js')(req, res))
 module.exports = router
