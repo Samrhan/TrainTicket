@@ -15,7 +15,7 @@ export class TrainsService {
     let year = date.getFullYear()
     let month = date.getMonth() + 1
     let day = date.getDate()
-    return `${year}${month < 9 ? `0${month}` : month}${day < 9 ? `0${day}` : day}T${hour < 9 ? `0${hour}` : hour}0000`
+    return `${year}${month < 10 ? `0${month}` : month}${day < 10 ? `0${day}` : day}T${hour < 10 ? `0${hour}` : hour}0000`
   }
 
   constructor(private http: HttpClient) {

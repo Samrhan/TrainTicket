@@ -13,6 +13,8 @@ export class JourneyComponent implements OnInit {
   departureStation!: string;
   arrivalStation!: string;
 
+  expand = false;
+
 
   constructor() {
 

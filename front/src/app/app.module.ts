@@ -21,6 +21,8 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import { JourneyComponent } from './home/travel-selector/journey/journey.component';
 import {MomentModule} from "ngx-moment";
+import {MatListModule} from "@angular/material/list";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -30,23 +32,25 @@ import {MomentModule} from "ngx-moment";
     HomeComponent,
     JourneyComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatAutocompleteModule,
-        MatInputModule,
-        HttpClientModule,
-        MatCardModule,
-        MatDividerModule,
-        MatButtonModule,
-        MatProgressBarModule,
-        MatMomentDateModule,
-        MatDatepickerModule,
-        MomentModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    HttpClientModule,
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatProgressBarModule,
+    MatMomentDateModule,
+    MatDatepickerModule,
+    MomentModule,
+    MatListModule,
+    MatExpansionModule,
+  ],
   providers: [{provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}],
   bootstrap: [AppComponent]
 })

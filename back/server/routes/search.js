@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
     console.log(datetime)
     from = encodeURIComponent(from)
     to = encodeURIComponent(to)
-    const result = await axios.get(`https://${process.env.SNCF_TOKEN}@api.sncf.com/v1/coverage/sncf/journeys?from=${from}&to=${to}&datetime=${datetime}`)
+    const result = await axios.get(`https://${process.env.SNCF_TOKEN}@api.sncf.com/v1/coverage/sncf/journeys?from=${from}&to=${to}&datetime=${datetime}&count=5`)
     const journeys = []
     for (let journey of result.data.journeys) {
         let tmp_journey = {

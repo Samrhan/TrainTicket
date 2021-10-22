@@ -35,12 +35,13 @@
           <button mat-button type="submit">RECHERCHER</button>
         </mat-card-actions>
       </form>
-      <app-journey *ngFor="let journey of journeys" [journey]="journey"></app-journey>
     </mat-card-content>
     <mat-card-footer>
       <mat-progress-bar #progressBar mode="determinate" [value]="progressBarValue"></mat-progress-bar>
     </mat-card-footer>
   </mat-card>
+  <app-journey *ngFor="let journey of journeys" [journey]="journey"></app-journey>
+
 </div>
 
 

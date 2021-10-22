@@ -1,0 +1,11 @@
+mat-card {
+  display: flex;
+  flex-direction: row;
+  div{
+    width: 90%;
+  }
+  button {
+    position: relative;
+    left: 1px;
+  }
+}
