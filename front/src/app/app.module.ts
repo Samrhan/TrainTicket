@@ -19,10 +19,13 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
-import { JourneyComponent } from './home/travel-selector/journey/journey.component';
+import {JourneyComponent} from './home/travel-selector/journey/journey.component';
 import {MomentModule} from "ngx-moment";
 import {MatListModule} from "@angular/material/list";
 import {MatExpansionModule} from "@angular/material/expansion";
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {BookComponent} from './home/book/book.component';
+import {MatStepperModule} from "@angular/material/stepper";
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
     GlobalHeaderComponent,
     TravelSelectorComponent,
     HomeComponent,
-    JourneyComponent
+    JourneyComponent,
+    BookComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +54,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
     MomentModule,
     MatListModule,
     MatExpansionModule,
+    FontAwesomeModule,
+    MatStepperModule,
   ],
   providers: [{provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}],
   bootstrap: [AppComponent]

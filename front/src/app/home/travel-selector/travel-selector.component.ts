@@ -1,13 +1,12 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Observable} from "rxjs";
-import {Form, FormBuilder, FormControl, Validators} from "@angular/forms";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {TrainsService} from "../../services/trains.service";
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs/operators";
 import {Station} from "../../interfaces/station";
-import {ProgressBarMode} from "@angular/material/progress-bar";
 import {RequireMatch} from "../../validators/require-match";
 import {DepartureHour} from "../../interfaces/departure-hour";
 import {Journey} from "../../interfaces/journey";
+import {faArrowsAltH} from "@fortawesome/free-solid-svg-icons";
 
 
 @Component({
@@ -26,6 +25,7 @@ export class TravelSelectorComponent implements OnInit {
   minDate!: Date;
 
   journeys!: Array<Journey>
+  faArrowsAltH = faArrowsAltH
 
   @ViewChild('progressBar') progressBar!: HTMLElement;
 
@@ -94,6 +94,12 @@ export class TravelSelectorComponent implements OnInit {
     if (value)
       return value.name;
     else return ''
+  }
+
+  invert(): void {
+    let departure = this.form.value.departure
+    this.form.get("departure")?.setValue(this.form.value.arrival)
+    this.form.get("arrival")?.setValue(departure)
   }
 
 }

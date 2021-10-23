@@ -32,4 +32,6 @@ router.get('/test', async (req, res) => {
 })
 router.get('/search/:from/:to/:datetime?', async (req,res)=>require('./search.js')(req,res))
 router.get("/trainstation/:query?", async (req, res) => require('./trainstation.js')(req, res))
+router.get("/address/:query?", async (req, res) => require('./address.js')(req, res))
+
 module.exports = router
