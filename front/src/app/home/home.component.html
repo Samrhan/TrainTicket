@@ -1,3 +1,67 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+
+  <button (click)="isCollapsed = !isCollapsed" aria-controls="navbarNav" aria-expanded="false"
+          aria-label="Toggle navigation" class="navbar-toggler"
+          data-target="#navbarNav" data-toggle="collapse" type="button">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div [collapse]="isCollapsed" class="collapse navbar-collapse justify-content-center" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" href="#formation" id="formation-nav">Réserver</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#experiences" id="experience-nav">Découvrir</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#competences" id="competences-nav">Programme de fidélité</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Partenaires</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Aide</a>
+      </li>
+    </ul>
+  </div>
+  <a class="navbar-brand">
+    <a>
+      <input alt="login" class="image-button" src="assets/login.png" type="image"> <span> Mon Compte </span>
+    </a>
+  </a>
+</nav>
+<carousel>
+  <slide>
+    <img alt="Third slide" class="bg-image" src="assets/train.png" style="display: block; width: 100%;">
+    <div class="text-left carousel-caption d-none d-md-block">
+      <h2>Nouvelle ligne</h2>
+      <p>Strasbourg - Deauville : La nouvelle ligne est arrivée !</p>
+    </div>
+  </slide>
+  <slide>
+    <img alt="Third slide" class="bg-image" src="assets/controleur.jpg" style="display: block; width: 100%;">
+    <div class="text-left carousel-caption d-none d-md-block">
+      <h2>Dijon</h2>
+      <p>Une femme accouche dans un train,
+        un contrôleur s'improvise sage-femme.</p>
+    </div>
+  </slide>
+  <slide>
+    <img alt="Third slide" class="bg-image" src="assets/train.png" style="display: block; width: 100%;">
+    <div class="text-left carousel-caption d-none d-md-block">
+      <h2>Montpellier</h2>
+      <p>Soirée d'inauguration de la nouvelle gare reportée à Novembre.</p>
+    </div>
+  </slide>
+  <slide>
+    <img alt="Third slide" class="bg-image" src="assets/train.png" style="display: block; width: 100%;">
+    <div class="text-left carousel-caption d-none d-md-block">
+      <h2>Paris Montparnasse</h2>
+      <p>Une femme sauve un enfant tombé sur les rails.
+        Le Président envisage la médaille d'honneur.</p>
+    </div>
+  </slide>
+</carousel>
 <div class="container">
   <div>
     <router-outlet></router-outlet>

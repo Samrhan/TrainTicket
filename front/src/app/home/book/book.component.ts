@@ -4,7 +4,7 @@ import {debounceTime, distinctUntilChanged, switchMap} from "rxjs/operators";
 import {UserService} from "../../services/user.service";
 import {Observable} from "rxjs";
 import {Address} from "../../interfaces/address";
-import {RequireMatch} from "../../validators/require-match";
+import {RequireObject} from "../../validators/require-object";
 
 @Component({
   selector: 'app-book',
@@ -18,7 +18,7 @@ export class BookComponent implements OnInit {
   form = new FormGroup({
     firstname: new FormControl('', Validators.required),
     lastname: new FormControl('', Validators.required),
-    address: new FormControl(null, [Validators.required, RequireMatch]),
+    address: new FormControl(null, [Validators.required, RequireObject]),
   });
 
   constructor(private userService: UserService) {

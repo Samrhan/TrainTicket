@@ -26,6 +26,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {BookComponent} from './home/book/book.component';
 import {MatStepperModule} from "@angular/material/stepper";
+import {CollapseModule} from "ngx-bootstrap/collapse";
+import {CarouselModule} from "ngx-bootstrap/carousel";
 
 @NgModule({
   declarations: [
@@ -56,6 +58,8 @@ import {MatStepperModule} from "@angular/material/stepper";
     MatExpansionModule,
     FontAwesomeModule,
     MatStepperModule,
+    CollapseModule,
+    CarouselModule,
   ],
   providers: [{provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}],
   bootstrap: [AppComponent]

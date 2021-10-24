@@ -8,7 +8,7 @@ const mysql = require('mysql2/promise');
 
 dotenv.config()
 
-const apiRouter = require('./routes/api.js')
+const apiRouter = require('./api.js')
 
 const app = express()
 
@@ -24,7 +24,7 @@ app.use(helmet());
 app.use(cors(corsOptions))
 app.use(logger('dev'))
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({extended: false}))
 app.use(session({
     secret: process.env.SECRET,
     name: 'sessionId',
@@ -32,14 +32,13 @@ app.use(session({
     resave: false,
     cookie: {
         httpOnly: true,
-        maxAge: 30*24*60*60*1000, // Un mois
+        maxAge: 30 * 24 * 60 * 60 * 1000, // Un mois
     },
 }))
 
 
-
 // Configuration des routes
-app.use('/uploads', express.static(__dirname.slice(0,-7) + '/uploads')); // Chemin absolu vers ce fichier, moins le /server, plus le /uploads
+app.use('/uploads', express.static(__dirname.slice(0, -7) + '/uploads')); // Chemin absolu vers ce fichier, moins le /server, plus le /uploads
 app.use('/api/', apiRouter)
 
 module.exports = app

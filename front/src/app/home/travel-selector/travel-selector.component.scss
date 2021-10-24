@@ -1,30 +1,33 @@
+mat-card {
+  border-radius: 20px 20px 0 0;
 
-mat-card-content {
-  form {
-    margin-top: 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
+  mat-card-content {
+    form {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
 
-    #timeInput {
-      width: 6rem;
-    }
+      #timeInput {
+        width: 6rem;
+      }
 
-    #dateInput {
-      width:8rem;
-    }
+      #dateInput {
+        width: 8rem;
+      }
 
-    mat-form-field {
-      margin-right: .4rem;
-      margin-left: .4rem;
-    }
+      mat-form-field {
+        margin-right: .4rem;
+        margin-left: .4rem;
+      }
 
-    .fa-button {
-      font-size: 2rem;
-      margin-left: .2rem;
-      margin-right: .2rem;
-      cursor: pointer;
+      .fa-button {
+        font-size: 2rem;
+        margin-left: .2rem;
+        margin-right: .2rem;
+        cursor: pointer;
+      }
     }
   }
 }

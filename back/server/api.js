@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const mysql = require("mysql2/promise")
+const {join, resolve} = require('path');
 
 const dotenv = require('dotenv')
+const fs = require("fs");
 dotenv.config()
 
 const client = mysql.createPool({
@@ -23,15 +25,22 @@ let auth_restricted_route = async function (req, res, next) {
         res.status(401).json({message: "Vous ne pouvez pas utiliser cette route"}).send();
     }
 }
+fs.readdir('./server/routes', (err, files) => {
+    files = files.filter(f => f.split('.').pop() === 'js');
+    if (files.length === 0) return console.log('No routes found');
+    files.forEach(f => {
+        
+        const Route = require(resolve(__dirname, join('./routes/', f)))
+        const route = new Route(client)
+        let params = ''
+        for (let i of route.params) {
+            params += `/:${i.name}${i.needed ? '' : '?'}`
+        }
 
-router.post("/login", async (req, res) => require('./login.js')(req, res, client))
-router.post("/disconnect", (req, res) => require('./disconnect.js')(req, res, client))
-router.get("/me", async (req, res) => require('./me.js')(req, res, client))
-router.get('/test', async (req, res) => {
-    res.status(200).json({message: "ok"});
+        router[route.method.toLowerCase()](route.route + params, async (req, res) => route.run(req, res));
+
+    })
+
 })
-router.get('/search/:from/:to/:datetime?', async (req,res)=>require('./search.js')(req,res))
-router.get("/trainstation/:query?", async (req, res) => require('./trainstation.js')(req, res))
-router.get("/address/:query?", async (req, res) => require('./address.js')(req, res))
 
 module.exports = router

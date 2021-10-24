@@ -1,9 +1,72 @@
 .container {
   display: flex;
   justify-content: center;
+  margin-top: 25rem;
+
   div {
     padding: 1rem;
-    width: 50rem;
-    border-radius: 10px;
+    width: 55rem;
+    border-radius: 20px;
+  }
+}
+
+
+.navbar {
+  padding: 0;
+
+  .navbar-collapse {
+    ul {
+      display: flex;
+      background-color: #e08a50;
+      box-shadow: rgba(0, 0, 0, .7) 2px .7px;
+      border-radius: 0 0 20px 20px;
+
+      .nav-link {
+        font-family: "Avenir Black", Consolas, Liberation Mono, Menlo, monospace !important;
+        margin: auto 30px;
+        color: white;
+        text-shadow: rgba(0, 0, 0, .8) 1px 1px;
+        font-size: 1rem;
+        max-width: 6rem;
+        text-align: center;
+        min-height: 3rem;
+
+      }
+    }
+  }
+
+  .navbar-brand {
+    position: absolute;
+    right: 0;
+    margin-right: 2rem;
+    cursor: pointer;
+
+    input {
+      vertical-align: middle;
+      margin-right: 10px;
+      margin-top: -4px;
+    }
+  }
+}
+
+
+carousel {
+  position: absolute;
+  width: 100vw;
+  margin-top: 2rem;
+
+  slide {
+    .bg-image {
+      width: 100vw;
+      max-height: 50vh;
+      object-fit: cover;
+    }
+
+    div {
+      text-shadow: black 1px 1px;
+      margin-bottom: 5rem;
+      font-size: 4rem;
+      line-height: 3.5rem;
+    }
   }
 }

@@ -3,10 +3,11 @@ import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {TrainsService} from "../../services/trains.service";
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs/operators";
 import {Station} from "../../interfaces/station";
-import {RequireMatch} from "../../validators/require-match";
+import {RequireObject} from "../../validators/require-object";
 import {DepartureHour} from "../../interfaces/departure-hour";
 import {Journey} from "../../interfaces/journey";
 import {faArrowsAltH} from "@fortawesome/free-solid-svg-icons";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -16,8 +17,8 @@ import {faArrowsAltH} from "@fortawesome/free-solid-svg-icons";
 })
 export class TravelSelectorComponent implements OnInit {
 
-  departureStations!: Array<Station>
-  arrivalStations!: Array<Station>
+  departureStations!: Observable<Array<Station>>
+  arrivalStations!: Observable<Array<Station>>
 
   progressBarValue = 0;
   hoursList!: Array<DepartureHour>;
@@ -31,10 +32,10 @@ export class TravelSelectorComponent implements OnInit {
 
 
   form = this.formBuilder.group({
-    departure: new FormControl([null], [Validators.required, RequireMatch]),
-    arrival: new FormControl([null], [Validators.required, RequireMatch]),
+    departure: new FormControl([null], [Validators.required, RequireObject]),
+    arrival: new FormControl([null], [Validators.required, RequireObject]),
     date: new FormControl(null, [Validators.required]),
-    time: new FormControl(null, [Validators.required, RequireMatch]),
+    time: new FormControl(null, [Validators.required, RequireObject]),
   });
 
   constructor(private formBuilder: FormBuilder, private trainService: TrainsService) {
@@ -42,21 +43,21 @@ export class TravelSelectorComponent implements OnInit {
     for (let i = 6; i < 21; i++)
       this.hoursList.push({name: `${i}H`, value: i})
     this.minDate = new Date()
-    this.form.get('departure')!.valueChanges.pipe(
+    this.departureStations = this.form.get('departure')!.valueChanges.pipe(
       distinctUntilChanged(),
       debounceTime(1000),
       switchMap(name => this.trainService.getStation(name))
-    ).subscribe((values) => this.departureStations = values);
-    this.form.get('arrival')!.valueChanges.pipe(
+    )
+    this.arrivalStations = this.form.get('arrival')!.valueChanges.pipe(
       distinctUntilChanged(),
       debounceTime(1000),
       switchMap(name => this.trainService.getStation(name))
-    ).subscribe((values) => this.arrivalStations = values);
+    )
   }
 
 
   ngOnInit(): void {
-    this.journeys = new Array<Journey>()
+    /*this.journeys = new Array<Journey>()
     this.journeys.push({
         "departure": new Date("2021-10-28T12:41:00.000Z"),
         "arrival": new Date("2021-10-28T14:35:00.000Z"),
@@ -72,13 +73,12 @@ export class TravelSelectorComponent implements OnInit {
           }
         ]
       }
-    )
+    )*/
   }
 
   async searchTravel(): Promise<void> {
     // @ts-ignore
     this.progressBar.mode = 'indeterminate'
-    console.log(this.form.value)
     const departureId = this.form.value.departure.id
     const arrivalId = this.form.value.arrival.id
     if (departureId && arrivalId)
