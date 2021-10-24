@@ -6,7 +6,9 @@ module.exports = class getAddress extends Route {
         super(client, {
             route: '/address',
             method: 'GET',
-            params: [{name: 'query', needed: true}]
+            params: [{name: 'query', needed: true}],
+            body: [],
+            auth: false
         });
     }
 

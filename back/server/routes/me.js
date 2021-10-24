@@ -5,7 +5,9 @@ module.exports = class postDisconnect extends Route {
         super(client, {
             route: '/me',
             method: 'GET',
-            params: []
+            params: [],
+            body: [],
+            auth: true
         });
     }
 

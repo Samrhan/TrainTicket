@@ -6,7 +6,9 @@ module.exports = class getAddress extends Route {
         super(client, {
             route: '/trainstation',
             method: 'GET',
-            params: [{name: 'query', needed: true}]
+            params: [{name: 'query', needed: false}],
+            body: [],
+            auth: false
         });
     }
 
@@ -20,9 +22,9 @@ module.exports = class getAddress extends Route {
                 for (let station of result.data.places) {
                     stations.push({name: station.name, id: station.id})
                 }
-            res.status(200).json(stations);
+            this.success(stations);
         } else {
-            res.status(200).json([]);
+            this.success([]);
 
         }
     }

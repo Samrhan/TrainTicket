@@ -6,36 +6,26 @@ module.exports = class getAddress extends Route {
         super(client, {
             route: '/login',
             method: 'POST',
-            params: []
+            params: [],
+            body: [{name: 'mail', type: 'string'}, {name: 'password', type: 'string'}],
+            auth: false
         });
     }
 
     async run(req, res) {
-        const mail = req.body.mail
-        const password = req.body.password
 
-        if (req.session.userId) {
-            res.status(403).json({message: "already logged in"})
-            return;
-        }
-
-        if (!(mail && password !== undefined)) {
-            res.status(400).json({message: "bad request - request must include mail and password"});
-            return;
-        }
-
-        let data = await this.client.query("SELECT * FROM user WHERE mail = ?", [mail])
+        let data = await this.client.query("SELECT * FROM user WHERE mail = ?", [this.mail])
 
         let result = Object.values(JSON.parse(JSON.stringify(data[0])))[0]
         if (data[0].length === 1) {
-            if (await bcrypt.compare(password, result.password)) {
+            if (await bcrypt.compare(this.password, result.password)) {
                 req.session.userId = result.id;
-                res.status(200).json({message: "ok"})
+                return this.success({message: "ok"})
             } else {
-                return res.status(401).json({message: "wrong credentials"});
+                return this.forbidden()
             }
         } else {
-            return res.status(403).json({message: "You can't connect anymore"});
+            return this.forbidden()
         }
     }
 }

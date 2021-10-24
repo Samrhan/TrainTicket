@@ -29,7 +29,7 @@ fs.readdir('./server/routes', (err, files) => {
     files = files.filter(f => f.split('.').pop() === 'js');
     if (files.length === 0) return console.log('No routes found');
     files.forEach(f => {
-        
+
         const Route = require(resolve(__dirname, join('./routes/', f)))
         const route = new Route(client)
         let params = ''
@@ -37,7 +37,9 @@ fs.readdir('./server/routes', (err, files) => {
             params += `/:${i.name}${i.needed ? '' : '?'}`
         }
 
-        router[route.method.toLowerCase()](route.route + params, async (req, res) => route.run(req, res));
+        router.route(route.route + params)
+            .all((req, res, next) => route.validateQuery(req, res, next))
+            [route.method.toLowerCase()](async (req, res) => route.run(req, res));
 
     })
 
