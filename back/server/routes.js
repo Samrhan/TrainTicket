@@ -15,6 +15,7 @@ class Route {
         this.method = options.method
         this.params = options.params
         this.body = options.body
+
     }
 
     /**
@@ -25,23 +26,29 @@ class Route {
 
     static validateOptions(client, options) {
         if (!client) throw new TypeError('No client was found')
+
         if (typeof options !== 'object') throw new TypeError('Route options is not an Object');
         if (typeof options.route !== 'string') throw new TypeError('Route name is not a string');
+
         if (options.route !== options.route.toLowerCase()) throw new Error('Route name is not lowercase');
         if (typeof options.method !== 'string') throw new TypeError('Route method is not a string');
+
         if (this.METHODS.indexOf(options.method) === -1) throw new TypeError('Route method is not valid');
         if (options.method !== options.method.toUpperCase()) throw new Error('Route method is not uppercase');
+
         if (!Array.isArray(options.params)) throw new Error('Route params is not an Array');
         if (!options.params.every(i => (typeof i === "object"))) throw new Error('Route params is not an Array of object');
+
         if (!Array.isArray(options.body)) throw new Error('Route body is not an Array');
         if (!options.body.every(i => (typeof i === "object"))) throw new Error('Route body is not an Array of object');
+
     }
 
     /**
      * Check query and add all args to the class
      * @param req : object
      * @param res : object
-     * @param next : function
+     * @param next : NextFunction
      * */
 
     validateQuery(req, res, next) {
