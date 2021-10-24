@@ -1,5 +1,5 @@
 const axios = require("axios")
-const Route = require("../routes");
+const Route = require("../route");
 const {parseDate, getDuration, convertToHHMM} = require('../utils')
 
 module.exports = class getAddress extends Route {

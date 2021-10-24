@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt')
-const Route = require("../routes");
+const Route = require("../route");
 
 module.exports = class getAddress extends Route {
     constructor(client) {

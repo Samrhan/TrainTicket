@@ -1,4 +1,4 @@
-const Route = require("../routes");
+const Route = require("../route");
 
 module.exports = class postDisconnect extends Route {
     constructor(client) {
