@@ -9,7 +9,7 @@ class Route {
      * */
 
     constructor(client, options) {
-        this.constructor.validateOptions(client, options)
+        Route.validateOptions(client, options)
         this.client = client
         this.route = options.route
         this.method = options.method
