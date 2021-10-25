@@ -11,13 +11,13 @@ module.exports = class getAddress extends Route {
         });
     }
 
-    async run(req, res) {
+    async run() {
         try {
             let user = await this.client.db.getUserPasswordByMail(this.mail)
             if (!await user.checkPassword(this.password))
                 return this.forbidden()
 
-            req.session.userId = user.id;
+            this.session.userId = user.id;
             return this.success(await this.client.db.getUserById(user.id))
 
         } catch (e) {

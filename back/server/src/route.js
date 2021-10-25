@@ -82,11 +82,9 @@ class Route {
 
     /**
      * Execute method
-     * @param req : object
-     * @param res : object
      * */
 
-    run(req, res) {
+    async run() {
         throw new Error(`The ${this.route} route has no run() method`);
     }
 

@@ -11,10 +11,10 @@ module.exports = class postDisconnect extends Route {
         });
     }
 
-    async run(req, res) {
+    async run() {
         try {
             const user = await this.client.db.getUserById(this.session.userId);
-            res.status(200).json(user);
+            this.success(user);
         } catch (e) {
             return this.notFound();
         }

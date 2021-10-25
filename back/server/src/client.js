@@ -45,9 +45,11 @@ module.exports = class Client {
                 const Route = require(resolve(__dirname, join('./routes/', f)))
                 const route = new Route(this)
                 let params = route.params.map(e => `/:${e.name}${e.needed ? '' : '?'}`).join('')
+
                 this.router.route(route.route + params)
+
                     .all((req, res, next) => route.validateQuery(req, res, next))
-                    [route.method.toLowerCase()](async (req, res) => route.run(req, res));
+                    [route.method.toLowerCase()](async () => await route.run());
 
             })
 

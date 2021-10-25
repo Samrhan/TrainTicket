@@ -11,9 +11,8 @@ module.exports = class postDisconnect extends Route {
         });
     }
 
-    async run(req, res) {
-        this.session.destroy(() => {
-            this.success()
-        });
+    async run() {
+        this.session.destroy()
+        this.success()
     }
 }

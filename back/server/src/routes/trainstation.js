@@ -13,7 +13,7 @@ module.exports = class getAddress extends Route {
         });
     }
 
-    async run(req, res) {
+    async run() {
         if (this.query) {
             this.success(await getStation(this.query));
         } else {

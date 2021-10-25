@@ -17,7 +17,7 @@ module.exports = class getAddress extends Route {
         });
     }
 
-    async run(req, res) {
+    async run() {
         try {
             await this.client.db.registerUser(this.mail, this.password, this.firstname, this.lastname, this.birthdate, this.address)
             return this.success({message: "ok"})
