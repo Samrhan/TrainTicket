@@ -6,6 +6,8 @@ const session = require("express-session");
 const fs = require("fs");
 const {resolve, join} = require("path");
 const db = require("./db.js")
+const mailgun = require('mailgun-js')
+const puppeteer = require("puppeteer")
 
 
 module.exports = class Client {
@@ -62,7 +64,62 @@ module.exports = class Client {
             password: process.env.DB_PASSWORD
         });
 
+        this.mailgunClient = mailgun({
+            domain: process.env.DOMAIN,
+            apiKey: process.env.MAILGUNAPI,
+            host: "api.eu.mailgun.net"
+        })
+
+
         this.server.use('/api/', this.router)
+        this.sendTicket('samuel.bader@efrei.net', {
+            date: 'Mercredi 11 Novembre',
+            departure: 'Marseille&nbsp;Saint&nbsp;Charles',
+            departure_hour: '10:23',
+            arrival: 'PARIS GARE DE LYON',
+            arrival_hour: '15:03',
+            voiture: 8,
+            place: 98,
+            mode: 'OUIGO',
+            classe: 'CLASSE 1',
+            travel_time: '04:04',
+            lastname: 'JEAN',
+            firstname: 'Michel',
+            dossier: 'SDFSD46',
+            ref: '564645657161646',
+            numero_billet: '4348916161',
+            price: '98,00€'
+        })
+    }
+
+    async initPuppeteer() {
+        this.browser = await puppeteer.launch({headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
+        this.page = await this.browser.newPage();
+
+        await this.page.goto('file://C:/Projets/TrainTicket/back/ressources/ticket/ticket_mail.html', {waitUntil: 'networkidle0'});
+    }
+
+    async sendTicket(mail, data) {
+        if (!this.browser)
+            await this.initPuppeteer()
+        await this.page.evaluate((data) => {
+            for (let i of Object.keys(data))
+                document.getElementById(i.toUpperCase()).innerHTML = data[i]
+
+
+        }, data)
+        let attached = new this.mailgunClient.Attachment({
+            data: await this.page.pdf({format: 'A4'}),
+            filename: 'test.pdf'
+        });
+
+        await this.mailgunClient.messages().send({
+            from: `TrainTicket <noreply@mg.train.sbader.fr>`,
+            to: mail,
+            subject: "Votre e-billet",
+            text: "Merci pour votre achat, vous trouverez votre E-Billet ci joint",
+            attachment: attached
+        })
     }
 
 }
