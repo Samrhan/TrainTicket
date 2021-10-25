@@ -5,6 +5,8 @@ const logger = require("morgan");
 const session = require("express-session");
 const fs = require("fs");
 const {resolve, join} = require("path");
+const db = require("./db.js")
+
 
 module.exports = class Client extends express {
 
@@ -54,6 +56,13 @@ module.exports = class Client extends express {
             })
 
         })
+
+        this.db = new db({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            database: process.env.DB_NAME,
+            password: process.env.DB_PASSWORD
+        });
 
         this.use('/api/', this.expressRouter)
     }

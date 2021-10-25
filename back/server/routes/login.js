@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt')
 const Route = require("../route");
 
 module.exports = class getAddress extends Route {
@@ -13,19 +12,19 @@ module.exports = class getAddress extends Route {
     }
 
     async run(req, res) {
-
-        let data = await this.client.query("SELECT * FROM user WHERE mail = ?", [this.mail])
-
-        let result = Object.values(JSON.parse(JSON.stringify(data[0])))[0]
-        if (data[0].length === 1) {
-            if (await bcrypt.compare(this.password, result.password)) {
-                req.session.userId = result.id;
-                return this.success({message: "ok"})
-            } else {
+        try {
+            let user = await this.client.db.getUserPasswordByMail(this.mail)
+            if (!await user.checkPassword(this.password))
                 return this.forbidden()
-            }
-        } else {
-            return this.forbidden()
+
+            req.session.userId = user.id;
+            return this.success({message: "ok"})
+
+        } catch (e) {
+            this.notFound()
         }
+
+
     }
+
 }

@@ -5,7 +5,7 @@ class Route {
     /**
      * Build route
      * @param client : object
-     * @param {{route: string, method: string, params: Array<{name: string, needed: boolean}>, body: Array<{name: string, type: string}>}} options
+     * @param {{route: string, method: string, params: Array<{name: string, needed: boolean}>, body: Array<{name: string, type: string}>,  auth: boolean}} options
      * */
 
     constructor(client, options) {
@@ -15,13 +15,14 @@ class Route {
         this.method = options.method
         this.params = options.params
         this.body = options.body
+        this.auth = options.auth
 
     }
 
     /**
      * Validate params
      * @param client : object
-     * @param {{route: string, method: string, params: Array<{name: string, needed: boolean}>, body: Array<{name: string, type: string}>}} options
+     * @param {{route: string, method: string, params: Array<{name: string, needed: boolean}>, body: Array<{name: string, type: string}>, auth: boolean}} options
      * */
 
     static validateOptions(client, options) {
@@ -42,6 +43,9 @@ class Route {
         if (!Array.isArray(options.body)) throw new Error('Route body is not an Array');
         if (!options.body.every(i => (typeof i === "object"))) throw new Error('Route body is not an Array of object');
 
+        if (typeof options.auth !== 'boolean') throw new TypeError('Route auth is not a boolean');
+
+
     }
 
     /**
@@ -53,15 +57,23 @@ class Route {
 
     validateQuery(req, res, next) {
         this.res = res;
+        if (this.auth) {
+            if (!req.session.userId) {
+                return this.forbidden()
+            }
+        }
+        if (req.session) {
+            this.session = req.session
+        }
         for (let i of this.body) {
             if (!req.body[i.name] || typeof req.body[i.name] !== i.type) {
-                return res.status(400).json({message: "missing or bad formed body properties"}).send()
+                return this.badFormed()
             }
             this[i.name] = req.body[i.name]
         }
         for (let i of this.params) {
             if (!req.params[i.name] && i.needed) {
-                return res.status(400).json({message: "missing or bad formed body properties"}).send()
+                return this.badFormed()
             }
             this[i.name] = req.params[i.name]
         }
@@ -87,11 +99,19 @@ class Route {
     }
 
     notFound() {
-        return this.res.status(404).json({message: "Not found"})
+        return this.res.status(404).json({message: "Not found"}).send()
     }
 
     forbidden() {
-        return this.res.status(403).json({message: "forbidden"})
+        return this.res.status(403).json({message: "forbidden"}).send()
+    }
+
+    badFormed() {
+        return this.res.status(400).json({message: "missing or bad formed body properties"}).send()
+    }
+
+    alreadyExist() {
+        return this.res.status(409).json({message: "conflict"}).send()
     }
 }
 

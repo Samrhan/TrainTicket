@@ -67,3 +67,37 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+
+<ng-template #content>
+  <div class="modal-body">
+    <div class="text-center">
+      <h3 class="title mb-4">Live Efrei</h3>
+      <h4 class="text-uppercase text-primary"><b>Se Connecter</b></h4>
+    </div>
+    <div class="login-form mt-4">
+      <form (ngSubmit)="login()" [formGroup]="loginForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Mail Efrei</mat-label>
+          <input formControlName="mail" matInput placeholder="Mail Efrei" type="email">
+          <mat-error *ngIf="loginForm.controls['mail'].hasError('incorrect')">
+            Entrez un mail efrei
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Mot de passe</mat-label>
+          <input formControlName="password" matInput placeholder="Mot de passe" type="password">
+          <mat-error *ngIf="loginForm.controls['password'].hasError('incorrect') && !wrong_credentials">
+            Saisissez votre mot de passe
+          </mat-error>
+          <mat-error *ngIf="wrong_credentials">
+            Mot de passe ou adresse mail incorrect
+          </mat-error>
+        </mat-form-field>
+        <!--p><a class="float-right text-muted font-size-15">Mot de passe oublié ?</a></p-->
+        <div class="text-center mt-4">
+          <button [disabled]="!loginForm.valid" class="btn btn-primary" type="submit">Se Connecter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
