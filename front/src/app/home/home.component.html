@@ -24,9 +24,11 @@
       </li>
     </ul>
   </div>
-  <a class="navbar-brand">
+  <a (click)="!user ? showModal(loginModal): disconnect()" class="navbar-brand">
     <a>
-      <input alt="login" class="image-button" src="assets/login.png" type="image"> <span> Mon Compte </span>
+      <input alt="login" class="image-button" src="assets/login.png" type="image">
+      <span *ngIf="!user"> Se Connecter</span>
+      <span *ngIf="user">{{user.firstname}} {{user.lastname}}</span>
     </a>
   </a>
 </nav>
@@ -68,19 +70,18 @@
   </div>
 </div>
 
-<ng-template #content>
+<ng-template #loginModal class="modal-box">
   <div class="modal-body">
     <div class="text-center">
-      <h3 class="title mb-4">Live Efrei</h3>
-      <h4 class="text-uppercase text-primary"><b>Se Connecter</b></h4>
+      <h3 class="text-uppercase"><b>Se Connecter</b></h3>
     </div>
     <div class="login-form mt-4">
       <form (ngSubmit)="login()" [formGroup]="loginForm">
         <mat-form-field appearance="outline">
-          <mat-label>Mail Efrei</mat-label>
+          <mat-label>Adresse mail</mat-label>
           <input formControlName="mail" matInput placeholder="Mail Efrei" type="email">
           <mat-error *ngIf="loginForm.controls['mail'].hasError('incorrect')">
-            Entrez un mail efrei
+            Entrez un mail
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -95,7 +96,8 @@
         </mat-form-field>
         <!--p><a class="float-right text-muted font-size-15">Mot de passe oublié ?</a></p-->
         <div class="text-center mt-4">
-          <button [disabled]="!loginForm.valid" class="btn btn-primary" type="submit">Se Connecter</button>
+          <button [disabled]="!loginForm.valid" mat-button type="submit">Se connecter</button>
+
         </div>
       </form>
     </div>

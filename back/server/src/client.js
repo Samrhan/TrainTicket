@@ -8,23 +8,23 @@ const {resolve, join} = require("path");
 const db = require("./db.js")
 
 
-module.exports = class Client extends express {
+module.exports = class Client {
 
     constructor() {
-        super();
-        this.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']); // Trust Nginx proxy
+        this.server = express()
+        this.server.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']); // Trust Nginx proxy
         const corsOptions = {
             origin: process.env.CORS_URL,
             optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
             credentials: true,
         };
 
-        this.use(helmet());
-        this.use(cors(corsOptions))
-        this.use(logger('dev'))
-        this.use(express.json())
-        this.use(express.urlencoded({extended: false}))
-        this.use(session({
+        this.server.use(helmet());
+        this.server.use(cors(corsOptions))
+        this.server.use(logger('dev'))
+        this.server.use(express.json())
+        this.server.use(express.urlencoded({extended: false}))
+        this.server.use(session({
             secret: process.env.SECRET,
             name: 'sessionId',
             saveUninitialized: false,
@@ -35,21 +35,17 @@ module.exports = class Client extends express {
             },
         }))
 
-        this.expressRouter = Client.Router()
+        this.router = express.Router()
 
-        fs.readdir('./server/routes', (err, files) => {
+        fs.readdir('./server/src/routes', (err, files) => {
             files = files.filter(f => f.split('.').pop() === 'js');
             if (files.length === 0) return console.log('No routes found');
             files.forEach(f => {
 
                 const Route = require(resolve(__dirname, join('./routes/', f)))
                 const route = new Route(this)
-                let params = ''
-                for (let i of route.params) {
-                    params += `/:${i.name}${i.needed ? '' : '?'}`
-                }
-
-                this.expressRouter.route(route.route + params)
+                let params = route.params.map(e => `/:${e.name}${e.needed ? '' : '?'}`).join('')
+                this.router.route(route.route + params)
                     .all((req, res, next) => route.validateQuery(req, res, next))
                     [route.method.toLowerCase()](async (req, res) => route.run(req, res));
 
@@ -64,7 +60,7 @@ module.exports = class Client extends express {
             password: process.env.DB_PASSWORD
         });
 
-        this.use('/api/', this.expressRouter)
+        this.server.use('/api/', this.router)
     }
 
 }

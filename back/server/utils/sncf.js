@@ -1,25 +1,22 @@
-const axios = require("axios")
-const Route = require("../route");
-const {parseDate, getDuration, convertToHHMM} = require('../utils')
+const axios = require("axios");
+const {parseDate, getDuration, convertToHHMM} = require("../utils/utils");
 
-module.exports = class getAddress extends Route {
-    constructor(client) {
-        super(client, {
-            route: '/search',
-            method: 'GET',
-            params: [{name: 'from', needed: true}, {name: 'to', needed: true}, {name: 'datetime', needed: false}],
-            body: [],
-            auth: false
-
-        });
+module.exports = class SNCF {
+    static async getStation(query) {
+        query = encodeURIComponent(query)
+        const result = await axios.get(`https://${process.env.SNCF_TOKEN}@api.sncf.com/v1/coverage/sncf/places?q=${query}&`)
+        let stations = []
+        if (result.data.places)
+            for (let station of result.data.places) {
+                stations.push({name: station.name, id: station.id})
+            }
+        return stations
     }
 
-    async run(req, res) {
-
-        this.from = encodeURIComponent(this.from)
-        this.to = encodeURIComponent(this.to)
-
-        const result = await axios.get(`https://${process.env.SNCF_TOKEN}@api.sncf.com/v1/coverage/sncf/journeys?from=${this.from}&to=${this.to}&count=5` + (this.datetime ? `&datetime=${this.datetime}` : ''))
+    static async getJourneys(from, to, datetime) {
+        from = encodeURIComponent(from)
+        to = encodeURIComponent(to)
+        const result = await axios.get(`https://${process.env.SNCF_TOKEN}@api.sncf.com/v1/coverage/sncf/journeys?from=${from}&to=${to}&count=5` + (datetime ? `&datetime=${datetime}` : ''))
         const journeys = []
         for (let journey of result.data.journeys) {
             let tmp_journey = {
@@ -49,8 +46,6 @@ module.exports = class getAddress extends Route {
             }
             journeys.push(tmp_journey)
         }
-        this.success(journeys);
+        return journeys
     }
-
-
 }

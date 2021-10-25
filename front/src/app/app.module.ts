@@ -28,6 +28,7 @@ import {BookComponent} from './home/book/book.component';
 import {MatStepperModule} from "@angular/material/stepper";
 import {CollapseModule} from "ngx-bootstrap/collapse";
 import {CarouselModule} from "ngx-bootstrap/carousel";
+import {BsModalService} from "ngx-bootstrap/modal";
 
 @NgModule({
   declarations: [
@@ -59,9 +60,8 @@ import {CarouselModule} from "ngx-bootstrap/carousel";
     FontAwesomeModule,
     MatStepperModule,
     CollapseModule,
-    CarouselModule,
-  ],
-  providers: [{provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}],
+    CarouselModule],
+  providers: [{provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}, BsModalService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

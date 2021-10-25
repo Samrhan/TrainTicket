@@ -90,8 +90,13 @@ class Route {
         throw new Error(`The ${this.route} route has no run() method`);
     }
 
+    /**
+     * Send back data with success
+     * @param {object} [data]
+     * */
+
     success(data) {
-        return this.res.json(data)
+        return this.res.status(200).json(data)
     }
 
     error(code, message) {

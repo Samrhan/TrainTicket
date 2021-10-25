@@ -18,7 +18,7 @@ module.exports = class getAddress extends Route {
                 return this.forbidden()
 
             req.session.userId = user.id;
-            return this.success({message: "ok"})
+            return this.success(await this.client.db.getUserById(user.id))
 
         } catch (e) {
             this.notFound()
