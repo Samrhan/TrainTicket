@@ -11,7 +11,7 @@ required tickets.
 
 #### Dependencies
 
-- [NodeJS 16](https://nodejs.org/fr/)
+- [NodeJS 14](https://nodejs.org/fr/)
 
 - NPM 7
 
