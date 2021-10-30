@@ -44,4 +44,13 @@ module.exports = class Utils {
             minutes = `0${minutes}`;
         return `${hours}h:${minutes}m`;
     }
+
+    /**
+     * Set the first letter of a string uppercase
+     * @param string : string
+     */
+
+    static capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 }

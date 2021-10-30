@@ -57,7 +57,7 @@ export class TravelSelectorComponent implements OnInit {
 
 
   ngOnInit(): void {
-    /*this.journeys = new Array<Journey>()
+    this.journeys = new Array<Journey>()
     this.journeys.push({
         "departure": new Date("2021-10-28T12:41:00.000Z"),
         "arrival": new Date("2021-10-28T14:35:00.000Z"),
@@ -73,7 +73,7 @@ export class TravelSelectorComponent implements OnInit {
           }
         ]
       }
-    )*/
+    )
   }
 
   async searchTravel(): Promise<void> {

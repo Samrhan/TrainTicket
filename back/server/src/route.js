@@ -4,7 +4,7 @@ class Route {
 
     /**
      * Build route
-     * @param client : object
+     * @param client : Client
      * @param {{route: string, method: string, params: Array<{name: string, needed: boolean}>, body: Array<{name: string, type: string}>,  auth: boolean}} options
      * */
 
@@ -21,8 +21,12 @@ class Route {
 
     /**
      * Validate params
-     * @param client : object
-     * @param {{route: string, method: string, params: Array<{name: string, needed: boolean}>, body: Array<{name: string, type: string}>, auth: boolean}} options
+     * @param client : Client
+     * @param {{route: string,
+     *          method: string,
+     *          params: Array<{name: string, needed: boolean}>,
+     *          body: Array<{name: string, type: string}>,
+     *          auth: boolean}} options
      * */
 
     static validateOptions(client, options) {
@@ -57,6 +61,7 @@ class Route {
 
     validateQuery(req, res, next) {
         this.res = res;
+
         if (this.auth) {
             if (!req.session.userId) {
                 return this.forbidden()

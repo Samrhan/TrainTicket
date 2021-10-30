@@ -8,12 +8,13 @@
     <div>
       <mat-card-subtitle>{{departureStation}} {{journey.departure | amLocal | amDateFormat: 'HH:mm'}}</mat-card-subtitle>
       <ul>
-        <li *ngFor="let section of journey.sections">{{section.mode}} {{section.from}} {{section.to}} {{section.duration}}</li>
+        <li
+          *ngFor="let section of journey.sections">{{section.mode}} {{section.from}} {{section.to}} {{section.duration}}</li>
       </ul>
       <mat-card-subtitle>{{arrivalStation}} {{journey.arrival | amLocal | amDateFormat: 'HH:mm'}}</mat-card-subtitle>
     </div>
     <mat-card-actions align="end">
-      <button mat-button routerLink="book">Réserver</button>
+      <button (click)="book()" mat-button>Réserver</button>
     </mat-card-actions>
   </mat-card>
 </mat-expansion-panel>

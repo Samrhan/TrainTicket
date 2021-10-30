@@ -2,34 +2,35 @@
   <mat-card class="example-card">
     <mat-card-title>Complétez vos informations</mat-card-title>
     <mat-card-content>
-      <mat-stepper [linear]="false" #stepper>
+      <mat-stepper #stepper [linear]="false">
         <mat-step [stepControl]="form">
           <form [formGroup]="form" class="form-group">
             <ng-template matStepLabel>Complétez vos informations</ng-template>
             <div id="inputs">
               <mat-form-field appearance="outline">
+                <mat-label>Mail</mat-label>
+                <input formControlName="mail" matInput type="email">
+                <mat-error *ngIf="form.controls['mail'].hasError('incorrect')">
+                  Saisissez votre prénom
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
                 <mat-label>Prénom</mat-label>
-                <input matInput>
+                <input formControlName="firstname" matInput>
                 <mat-error *ngIf="form.controls['firstname'].hasError('incorrect')">
                   Saisissez votre prénom
                 </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Nom</mat-label>
-                <input matInput>
+                <input formControlName="lastname" matInput>
                 <mat-error *ngIf="form.controls['lastname'].hasError('incorrect')">
                   Saisissez votre nom
                 </mat-error>
               </mat-form-field>
-              <mat-form-field id="dateInput" appearance="outline">
-                <mat-label>Date de naissance</mat-label>
-                <input matInput [matDatepicker]="picker">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-              <mat-form-field id="timeInput" appearance="outline">
+              <mat-form-field appearance="outline" id="timeInput">
                 <mat-label>Adresse</mat-label>
-                <input formControlName="address" matInput [matAutocomplete]="address">
+                <input [matAutocomplete]="address" formControlName="address" matInput>
                 <mat-error *ngIf="form.controls['address'].hasError('incorrect')">
                   Sélectionnez une adresse
                 </mat-error>
@@ -48,7 +49,7 @@
           <p>You are now done.</p>
           <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
+            <button (click)="stepper.reset()" mat-button>Reset</button>
           </div>
         </mat-step>
       </mat-stepper>

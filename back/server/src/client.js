@@ -43,15 +43,14 @@ module.exports = class Client {
 
         fs.readdir('./server/src/routes', (err, files) => {
             files = files.filter(f => f.split('.').pop() === 'js');
-            if (files.length === 0) return console.log('No routes found');
+            if (files.length === 0) return console.error('No routes found');
             files.forEach(f => {
 
                 const Route = require(resolve(__dirname, join('./routes/', f)))
                 const route = new Route(this)
                 let params = route.params.map(e => `/:${e.name}${e.needed ? '' : '?'}`).join('')
-
+                // We register all the routes
                 this.router.route(route.route + params)
-
                     .all((req, res, next) => route.validateQuery(req, res, next))
                     [route.method.toLowerCase()](async () => await route.run());
 
@@ -74,24 +73,7 @@ module.exports = class Client {
 
 
         this.server.use('/api/', this.router)
-        this.sendTicket('samuel.bader@efrei.net', {
-            date: 'Mercredi 11 Novembre',
-            departure: 'Marseille&nbsp;Saint&nbsp;Charles',
-            departure_hour: '10:23',
-            arrival: 'PARIS GARE DE LYON',
-            arrival_hour: '15:03',
-            voiture: 8,
-            place: 98,
-            mode: 'OUIGO',
-            classe: 'CLASSE 1',
-            travel_time: '04:04',
-            lastname: 'JEAN',
-            firstname: 'Michel',
-            dossier: 'SDFSD46',
-            ref: '564645657161646',
-            numero_billet: '4348916161',
-            price: '98,00€'
-        })
+
     }
 
     async initPuppeteer() {

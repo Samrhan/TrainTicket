@@ -4,13 +4,14 @@ import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {Address} from "../interfaces/address";
 import {User} from "../interfaces/user";
+import {StoreService} from "./store.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private storeService: StoreService) {
   }
 
   getAddress(name: string): Observable<Address[]> {
@@ -34,9 +35,14 @@ export class UserService {
   }
 
   getUser(): Observable<User> {
-    return this.http.get<User>(
-      `${environment.api}me`,
-      {withCredentials: true}
-    )
+    if (!this.storeService.user)
+      return this.http.get<User>(
+        `${environment.api}me`,
+        {withCredentials: true}
+      )
+    else return new Observable<User>(observer => {
+      observer.next(this.storeService.user)
+      observer.complete()
+    })
   }
 }
