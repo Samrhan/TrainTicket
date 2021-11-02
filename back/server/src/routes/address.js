@@ -1,7 +1,12 @@
-const Route = require("../route");
+const Route = require("../route")
 const {getAdresses} = require('../../utils/address')
 
-module.exports = class getAddress extends Route {
+class GetAddress extends Route {
+
+    /**
+     * @param [client] Client
+     * */
+
     constructor(client) {
         super(client, {
             route: '/address',
@@ -13,12 +18,15 @@ module.exports = class getAddress extends Route {
     }
 
     async run() {
-        if (this.query) {
+        if (this.query !== undefined) {
             this.success(await getAdresses(this.query));
         } else {
             this.success([]);
         }
     }
-
-
 }
+
+
+////////////
+
+module.exports = GetAddress

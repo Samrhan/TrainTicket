@@ -1,6 +1,11 @@
 const Route = require("../route");
 
-module.exports = class getAddress extends Route {
+class PostRegister extends Route {
+
+    /**
+     * @param [client] Client
+     * */
+
     constructor(client) {
         super(client, {
             route: '/register',
@@ -29,3 +34,7 @@ module.exports = class getAddress extends Route {
     }
 
 }
+
+////////////
+
+module.exports = PostRegister;

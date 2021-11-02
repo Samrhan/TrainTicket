@@ -45,14 +45,19 @@ module.exports = class Client {
             files = files.filter(f => f.split('.').pop() === 'js');
             if (files.length === 0) return console.error('No routes found');
             files.forEach(f => {
-
+                // get the route
                 const Route = require(resolve(__dirname, join('./routes/', f)))
-                const route = new Route(this)
+                // fetch de route with params
+                const route = new Route()
                 let params = route.params.map(e => `/:${e.name}${e.needed ? '' : '?'}`).join('')
                 // We register all the routes
                 this.router.route(route.route + params)
-                    .all((req, res, next) => route.validateQuery(req, res, next))
-                    [route.method.toLowerCase()](async () => await route.run());
+                    [route.method.toLowerCase()](async (req, res) => {
+                    const _route = new Route(this)
+                    if (_route.validateQuery(req, res)) {
+                        await _route.run()
+                    }
+                });
 
             })
 

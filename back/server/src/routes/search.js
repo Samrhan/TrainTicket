@@ -1,7 +1,12 @@
 const Route = require("../route");
 const {getJourneys} = require('../../utils/sncf')
 
-module.exports = class getAddress extends Route {
+class getSearch extends Route {
+
+    /**
+     * @param [client] Client
+     * */
+
     constructor(client) {
         super(client, {
             route: '/search',
@@ -17,3 +22,7 @@ module.exports = class getAddress extends Route {
         this.success(await getJourneys(this.from, this.to, this.datetime));
     }
 }
+
+////////////
+
+module.exports = getSearch;

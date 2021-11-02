@@ -1,6 +1,11 @@
 const Route = require("../route");
 
-module.exports = class postDisconnect extends Route {
+class PostDisconnect extends Route {
+
+    /**
+     * @param [client] Client
+     * */
+
     constructor(client) {
         super(client, {
             route: '/disconnect',
@@ -16,3 +21,8 @@ module.exports = class postDisconnect extends Route {
         this.success()
     }
 }
+
+
+////////////
+
+module.exports = PostDisconnect

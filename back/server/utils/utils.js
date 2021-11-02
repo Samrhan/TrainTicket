@@ -1,6 +1,6 @@
 module.exports = class Utils {
     /***
-     * Get Date object from SNCF formated date
+     * Get Date object from SNCF formatted date
      * @param date : string
      * ***/
 

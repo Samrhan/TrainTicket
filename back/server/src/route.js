@@ -4,7 +4,7 @@ class Route {
 
     /**
      * Build route
-     * @param client : Client
+     * @param [client] client
      * @param {{route: string, method: string, params: Array<{name: string, needed: boolean}>, body: Array<{name: string, type: string}>,  auth: boolean}} options
      * */
 
@@ -30,8 +30,6 @@ class Route {
      * */
 
     static validateOptions(client, options) {
-        if (!client) throw new TypeError('No client was found')
-
         if (typeof options !== 'object') throw new TypeError('Route options is not an Object');
         if (typeof options.route !== 'string') throw new TypeError('Route name is not a string');
 
@@ -56,15 +54,16 @@ class Route {
      * Check query and add all args to the class
      * @param req : object
      * @param res : object
-     * @param next : NextFunction
+     * @return boolean
      * */
 
-    validateQuery(req, res, next) {
+    validateQuery(req, res) {
         this.res = res;
 
         if (this.auth) {
             if (!req.session.userId) {
-                return this.forbidden()
+                this.forbidden()
+                return false
             }
         }
         if (req.session) {
@@ -72,17 +71,19 @@ class Route {
         }
         for (let i of this.body) {
             if (!req.body[i.name] || typeof req.body[i.name] !== i.type) {
-                return this.badFormed()
+                this.badFormed()
+                return false
             }
             this[i.name] = req.body[i.name]
         }
         for (let i of this.params) {
             if (!req.params[i.name] && i.needed) {
-                return this.badFormed()
+                this.badFormed()
+                return false
             }
             this[i.name] = req.params[i.name]
         }
-        next()
+        return true
     }
 
     /**

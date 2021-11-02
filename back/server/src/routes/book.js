@@ -3,7 +3,12 @@ const moment = require('moment-timezone');
 const {capitalize} = require('../../utils/utils');
 moment.locale('fr')
 
-module.exports = class postBook extends Route {
+class PostBook extends Route {
+
+    /**
+     * @param [client] Client
+     * */
+
     constructor(client) {
         super(client, {
             route: '/book',
@@ -63,3 +68,7 @@ module.exports = class postBook extends Route {
     }
 
 }
+
+////////////
+
+module.exports = PostBook
