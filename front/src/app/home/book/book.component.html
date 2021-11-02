@@ -1,0 +1,69 @@
+<div id="travel-selector">
+  <mat-card class="example-card">
+    <mat-card-title>Complétez vos informations</mat-card-title>
+    <mat-card-content>
+      <mat-stepper #stepper [linear]="false">
+        <mat-step [stepControl]="form">
+          <form [formGroup]="form" class="form-group">
+            <ng-template matStepLabel>Vérifiez ou complétez vos informations</ng-template>
+            <div id="inputs">
+              <mat-form-field appearance="outline">
+                <mat-label>Mail</mat-label>
+                <input formControlName="mail" matInput type="email">
+                <mat-error *ngIf="form.controls['mail'].hasError('incorrect')">
+                  Saisissez votre prénom
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Prénom</mat-label>
+                <input formControlName="firstname" matInput>
+                <mat-error *ngIf="form.controls['firstname'].hasError('incorrect')">
+                  Saisissez votre prénom
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Nom</mat-label>
+                <input formControlName="lastname" matInput>
+                <mat-error *ngIf="form.controls['lastname'].hasError('incorrect')">
+                  Saisissez votre nom
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" id="timeInput">
+                <mat-label>Adresse</mat-label>
+                <input [matAutocomplete]="address" formControlName="address" matInput>
+                <mat-error *ngIf="form.controls['address'].hasError('incorrect')">
+                  Sélectionnez une adresse
+                </mat-error>
+              </mat-form-field>
+              <p class="float-right text-muted font-size-15">
+                L'identité sera vérifiée à bord des trains.
+              </p>
+            </div>
+            <mat-card-actions>
+              <button mat-button matStepperNext type="submit">Suivant</button>
+            </mat-card-actions>
+
+          </form>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Récapitulatif</ng-template>
+          <p>Voyage de {{journey.sections[0].from}} vers {{journey.sections[journey.sections.length - 1].from}}
+            le {{journey.departure | amLocal | amDateFormat: 'DD/MM à HH:mm'}} </p>
+          <p> Le billet sera envoyé à {{form.value.firstname}} {{form.value.lastname}} via l'adresse
+            mail {{form.value.mail}}</p>
+          <div>
+            <button mat-button matStepperPrevious>Revenir</button>
+            <button (click)="book()" [disabled]="!form.valid" mat-button>Confirmer</button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+<mat-autocomplete #address="matAutocomplete" [displayWith]="displayWith">
+  <mat-option *ngFor="let address of addresses | async" [value]="address">
+    {{address.label}}
+  </mat-option>
+</mat-autocomplete>

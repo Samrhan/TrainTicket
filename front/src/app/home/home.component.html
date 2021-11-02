@@ -1,0 +1,167 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+
+  <button (click)="isCollapsed = !isCollapsed" aria-controls="navbarNav" aria-expanded="false"
+          aria-label="Toggle navigation" class="navbar-toggler"
+          data-target="#navbarNav" data-toggle="collapse" type="button">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div [collapse]="isCollapsed" class="collapse navbar-collapse justify-content-center" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" href="#formation" id="formation-nav">Réserver</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#experiences" id="experience-nav">Découvrir</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#competences" id="competences-nav">Programme de fidélité</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Partenaires</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Aide</a>
+      </li>
+    </ul>
+  </div>
+  <a (click)="!user ? showModal(loginModal): disconnect()" class="navbar-brand">
+    <a>
+      <input alt="login" class="image-button" src="assets/login.png" type="image">
+      <span *ngIf="!user"> Se Connecter</span>
+      <span *ngIf="user">{{user.firstname}} {{user.lastname}}</span>
+    </a>
+  </a>
+</nav>
+<carousel>
+  <slide>
+    <img alt="Third slide" class="bg-image" src="assets/train.png" style="display: block; width: 100%;">
+    <div class="text-left carousel-caption d-none d-md-block">
+      <h2>Nouvelle ligne</h2>
+      <p>Strasbourg - Deauville : La nouvelle ligne est arrivée !</p>
+    </div>
+  </slide>
+  <slide>
+    <img alt="Third slide" class="bg-image" src="assets/controleur.jpg" style="display: block; width: 100%;">
+    <div class="text-left carousel-caption d-none d-md-block">
+      <h2>Dijon</h2>
+      <p>Une femme accouche dans un train,
+        un contrôleur s'improvise sage-femme.</p>
+    </div>
+  </slide>
+  <slide>
+    <img alt="Third slide" class="bg-image" src="assets/train.png" style="display: block; width: 100%;">
+    <div class="text-left carousel-caption d-none d-md-block">
+      <h2>Montpellier</h2>
+      <p>Soirée d'inauguration de la nouvelle gare reportée à Novembre.</p>
+    </div>
+  </slide>
+  <slide>
+    <img alt="Third slide" class="bg-image" src="assets/train.png" style="display: block; width: 100%;">
+    <div class="text-left carousel-caption d-none d-md-block">
+      <h2>Paris Montparnasse</h2>
+      <p>Une femme sauve un enfant tombé sur les rails.
+        Le Président envisage la médaille d'honneur.</p>
+    </div>
+  </slide>
+</carousel>
+<div class="container">
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<ng-template #loginModal class="modal-box">
+  <div class="modal-body">
+    <div class="text-center">
+      <h3 class="text-uppercase"><b>Se Connecter</b></h3>
+    </div>
+    <div class="login-form mt-4">
+      <form (ngSubmit)="login()" [formGroup]="loginForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Adresse mail</mat-label>
+          <input formControlName="mail" matInput placeholder="Mail" type="email">
+          <mat-error *ngIf="loginForm.controls['mail'].hasError('incorrect')">
+            Entrez un mail
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Mot de passe</mat-label>
+          <input formControlName="password" matInput placeholder="Mot de passe" type="password">
+          <mat-error *ngIf="loginForm.controls['password'].hasError('incorrect') && !wrongCredentials">
+            Saisissez votre mot de passe
+          </mat-error>
+          <mat-error *ngIf="wrongCredentials">
+            Mot de passe ou adresse mail incorrect
+          </mat-error>
+        </mat-form-field>
+        <p><a (click)="showModal(registerModal)" class="float-right text-muted font-size-15">Pas encore de compte ?
+          Inscrivez-vous</a>
+        </p>
+        <div class="text-center mt-4">
+          <button [disabled]="!loginForm.valid" mat-button type="submit">Se connecter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #registerModal class="modal-box">
+  <div class="modal-body">
+    <div class="text-center">
+      <h3 class="text-uppercase"><b>Se Connecter</b></h3>
+    </div>
+    <div class="login-form mt-4">
+      <form (ngSubmit)="register()" [formGroup]="registerForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Adresse mail</mat-label>
+          <input formControlName="mail" matInput placeholder="Mail" type="email">
+          <mat-error *ngIf="registerForm.controls['mail'].hasError('incorrect') && !alreadyExist">
+            Entrez un mail
+          </mat-error>
+          <mat-error *ngIf="alreadyExist">
+            L'adresse mail est déjà enregistrée
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Prénom</mat-label>
+          <input formControlName="firstname" matInput placeholder="Prénom">
+          <mat-error *ngIf="registerForm.controls['firstname'].hasError('incorrect')">
+            Entrez votre prénom
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nom</mat-label>
+          <input formControlName="lastname" matInput placeholder="Nom">
+          <mat-error *ngIf="registerForm.controls['lastname'].hasError('incorrect')">
+            Entrez votre nom
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" id="timeInput">
+          <mat-label>Adresse</mat-label>
+          <input [matAutocomplete]="address" formControlName="address" matInput>
+          <mat-error *ngIf="registerForm.controls['address'].hasError('incorrect')">
+            Sélectionnez une adresse
+          </mat-error>
+          <mat-autocomplete #address="matAutocomplete" [displayWith]="displayWith">
+            <mat-option *ngFor="let address of addresses | async" [value]="address">
+              {{address.label}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Mot de passe</mat-label>
+          <input formControlName="password" matInput placeholder="Mot de passe" type="password">
+          <mat-error *ngIf="registerForm.controls['password'].hasError('incorrect') && !wrongCredentials">
+            Saisissez votre mot de passe
+          </mat-error>
+        </mat-form-field>
+        <div class="text-center mt-4">
+          <button [disabled]="!this.registerForm.valid" mat-button type="submit">Se connecter</button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+

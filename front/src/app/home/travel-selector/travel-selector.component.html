@@ -1,0 +1,65 @@
+<div id="travel-selector">
+
+  <mat-card class="example-card">
+    <mat-card-title>Rechercher un train</mat-card-title>
+    <mat-card-content>
+      <form (ngSubmit)="searchTravel()" [formGroup]="form" class="form-group">
+        <div id="inputs">
+          <mat-form-field appearance="outline">
+            <mat-label>Départ</mat-label>
+            <input [matAutocomplete]="departure" formControlName="departure" matInput>
+            <mat-error *ngIf="form.controls['departure'].hasError('incorrect')">
+              Sélectionnez une gare
+            </mat-error>
+          </mat-form-field>
+          <fa-icon (click)="invert()" [icon]="faArrowsAltH" class="fa-button" title="inverser">Inverser</fa-icon>
+          <mat-form-field appearance="outline">
+            <mat-label>Arrivée</mat-label>
+            <input [matAutocomplete]="arrival" formControlName="arrival" matInput>
+            <mat-error *ngIf="form.controls['arrival'].hasError('incorrect')">
+              Sélectionnez une gare
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" id="dateInput">
+            <mat-label>Date</mat-label>
+            <input [matDatepicker]="picker" [min]="minDate" formControlName="date" matInput>
+            <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline" id="timeInput">
+            <mat-label>Heure</mat-label>
+            <input [matAutocomplete]="time" formControlName="time" matInput>
+            <mat-error *ngIf="form.controls['time'].hasError('incorrect')">
+              Sélectionnez une heure de départ
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <mat-card-actions>
+          <button [disabled]="!form.valid" mat-button type="submit">RECHERCHER</button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-progress-bar #progressBar [value]="progressBarValue" mode="determinate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+  <app-journey *ngFor="let journey of journeys" [journey]="journey"></app-journey>
+
+</div>
+
+
+<mat-autocomplete #departure="matAutocomplete" [displayWith]="displayWith">
+  <mat-option *ngFor="let station of departureStations | async" [value]="station">
+    {{station.name}}
+  </mat-option>
+</mat-autocomplete>
+<mat-autocomplete #arrival="matAutocomplete" [displayWith]="displayWith">
+  <mat-option *ngFor="let station of arrivalStations | async" [value]="station">
+    {{station.name}}
+  </mat-option>
+</mat-autocomplete>
+<mat-autocomplete #time="matAutocomplete" [displayWith]="displayWith">
+  <mat-option *ngFor="let hour of hoursList" [value]="hour">
+    {{hour.name}}
+  </mat-option>
+</mat-autocomplete>
