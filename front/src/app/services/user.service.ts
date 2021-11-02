@@ -5,6 +5,8 @@ import {environment} from "../../environments/environment";
 import {Address} from "../interfaces/address";
 import {User} from "../interfaces/user";
 import {StoreService} from "./store.service";
+import {LoginForm} from "../interfaces/login-form";
+import {RegisterForm} from "../interfaces/register-form";
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +21,18 @@ export class UserService {
       .get<Address[]>(`${environment.api}address/${name}`)
   }
 
-  login(mail: string, password: string): Observable<User> {
+  login(loginForm: LoginForm): Observable<User> {
     return this.http
-      .post<User>(`${environment.api}login`, {
-        mail: mail,
-        password: password
-      }, {withCredentials: true})
+      .post<User>(`${environment.api}login`,
+        loginForm,
+        {withCredentials: true})
+  }
+
+  register(registerForm: RegisterForm): Observable<User> {
+    return this.http
+      .post<User>(`${environment.api}register`,
+        registerForm,
+        {withCredentials: true})
   }
 
   disconnect(): Observable<object> {

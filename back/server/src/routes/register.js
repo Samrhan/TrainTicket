@@ -16,7 +16,6 @@ class PostRegister extends Route {
                 {name: 'password', type: 'string'},
                 {name: 'firstname', type: 'string'},
                 {name: 'lastname', type: 'string'},
-                {name: 'birthdate', type: 'string'},
                 {name: 'address', type: 'string'}],
             auth: false
         });
@@ -24,9 +23,10 @@ class PostRegister extends Route {
 
     async run() {
         try {
-            await this.client.db.registerUser(this.mail, this.password, this.firstname, this.lastname, this.birthdate, this.address)
+            await this.client.db.registerUser(this.mail, this.password, this.firstname, this.lastname, this.address)
             return this.success({message: "ok"})
         } catch (e) {
+            console.log(e)
             this.alreadyExist()
         }
 

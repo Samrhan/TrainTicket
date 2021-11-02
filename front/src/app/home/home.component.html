@@ -79,7 +79,7 @@
       <form (ngSubmit)="login()" [formGroup]="loginForm">
         <mat-form-field appearance="outline">
           <mat-label>Adresse mail</mat-label>
-          <input formControlName="mail" matInput placeholder="Mail Efrei" type="email">
+          <input formControlName="mail" matInput placeholder="Mail" type="email">
           <mat-error *ngIf="loginForm.controls['mail'].hasError('incorrect')">
             Entrez un mail
           </mat-error>
@@ -87,19 +87,81 @@
         <mat-form-field appearance="outline">
           <mat-label>Mot de passe</mat-label>
           <input formControlName="password" matInput placeholder="Mot de passe" type="password">
-          <mat-error *ngIf="loginForm.controls['password'].hasError('incorrect') && !wrong_credentials">
+          <mat-error *ngIf="loginForm.controls['password'].hasError('incorrect') && !wrongCredentials">
             Saisissez votre mot de passe
           </mat-error>
-          <mat-error *ngIf="wrong_credentials">
+          <mat-error *ngIf="wrongCredentials">
             Mot de passe ou adresse mail incorrect
           </mat-error>
         </mat-form-field>
-        <!--p><a class="float-right text-muted font-size-15">Mot de passe oublié ?</a></p-->
+        <p><a (click)="showModal(registerModal)" class="float-right text-muted font-size-15">Pas encore de compte ?
+          Inscrivez-vous</a>
+        </p>
         <div class="text-center mt-4">
           <button [disabled]="!loginForm.valid" mat-button type="submit">Se connecter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #registerModal class="modal-box">
+  <div class="modal-body">
+    <div class="text-center">
+      <h3 class="text-uppercase"><b>Se Connecter</b></h3>
+    </div>
+    <div class="login-form mt-4">
+      <form (ngSubmit)="register()" [formGroup]="registerForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Adresse mail</mat-label>
+          <input formControlName="mail" matInput placeholder="Mail" type="email">
+          <mat-error *ngIf="registerForm.controls['mail'].hasError('incorrect') && !alreadyExist">
+            Entrez un mail
+          </mat-error>
+          <mat-error *ngIf="alreadyExist">
+            L'adresse mail est déjà enregistrée
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Prénom</mat-label>
+          <input formControlName="firstname" matInput placeholder="Prénom">
+          <mat-error *ngIf="registerForm.controls['firstname'].hasError('incorrect')">
+            Entrez votre prénom
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nom</mat-label>
+          <input formControlName="lastname" matInput placeholder="Nom">
+          <mat-error *ngIf="registerForm.controls['lastname'].hasError('incorrect')">
+            Entrez votre nom
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" id="timeInput">
+          <mat-label>Adresse</mat-label>
+          <input [matAutocomplete]="address" formControlName="address" matInput>
+          <mat-error *ngIf="registerForm.controls['address'].hasError('incorrect')">
+            Sélectionnez une adresse
+          </mat-error>
+          <mat-autocomplete #address="matAutocomplete" [displayWith]="displayWith">
+            <mat-option *ngFor="let address of addresses | async" [value]="address">
+              {{address.label}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Mot de passe</mat-label>
+          <input formControlName="password" matInput placeholder="Mot de passe" type="password">
+          <mat-error *ngIf="registerForm.controls['password'].hasError('incorrect') && !wrongCredentials">
+            Saisissez votre mot de passe
+          </mat-error>
+        </mat-form-field>
+        <div class="text-center mt-4">
+          <button [disabled]="!this.registerForm.valid" mat-button type="submit">Se connecter</button>
 
         </div>
       </form>
     </div>
   </div>
 </ng-template>
+

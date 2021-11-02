@@ -1,25 +1,4 @@
-
-mat-card-content {
-  mat-stepper {
-    mat-step {
-      form {
-        margin-top: 2rem;
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: column;
-
-        mat-form-field {
-          margin-right: .4rem;
-          margin-left: .4rem;
-        }
-
-        .fa-button {
-          font-size: 2rem;
-          margin-left: .2rem;
-          margin-right: .2rem;
-          cursor: pointer;
-        }
-      }
-    }
-  }
+div#inputs {
+  display: flex;
+  flex-direction: column;
 }

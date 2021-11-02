@@ -77,3 +77,9 @@ carousel {
     flex-direction: column;
   }
 }
+
+
+// Force the autocomplete showing in front of everything
+::ng-deep .cdk-overlay-container {
+  z-index: 9999;
+}

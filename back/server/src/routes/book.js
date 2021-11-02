@@ -14,15 +14,17 @@ class PostBook extends Route {
             route: '/book',
             method: 'POST',
             params: [],
-            body: [{name: 'journey', type: 'object'}],
-            auth: true,
+            body: [{name: 'journey', type: 'object'}, {name: 'user', type: 'object'}],
+            auth: false,
         });
     }
 
     async run() {
         try {
-            const user = await this.client.db.getUserById(this.session.userId)
-            await this.client.sendTicket(user.mail, this.formatData(user, this.journey))
+            if (!this.user.mail) {
+                this.user = await this.client.db.getUserById(this.session.userId)
+            }
+            await this.client.sendTicket(this.user.mail, this.formatData(this.user, this.journey))
             return this.success({message: "ok"})
         } catch (e) {
             console.error(e)
@@ -37,7 +39,7 @@ class PostBook extends Route {
             date: capitalize(moment(journey.departure).format('dddd Do MMMM')),
             departure: journey.sections[0].from.toUpperCase().replace(/ /g, "&nbsp;"),
             departure_hour: moment(journey.departure).tz('UTC').format('LT'),
-            arrival: journey.sections[journey.sections.length - 1].to.replace(/ /g, "&nbsp;").toUpperCase(),
+            arrival: journey.sections[journey.sections.length - 1].to.toUpperCase().replace(/ /g, "&nbsp;"),
             arrival_hour: moment(journey.arrival).tz('UTC').format('LT'),
             voiture: Math.ceil(Math.random() * 18),
             place: Math.ceil(Math.random() * 150),

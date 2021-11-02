@@ -8,6 +8,5 @@ CREATE TABLE user
     lastname  VARCHAR(20)  NOT NULL,
     firstname VARCHAR(20)  NOT NULL,
     password  VARCHAR(200) NOT NULL,
-    birthdate VARCHAR(10)  NOT NULL,
     address   TEXT         NOT NULL
 );

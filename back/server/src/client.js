@@ -97,7 +97,7 @@ module.exports = class Client {
 
         let attached = {
             data: await this.page.pdf({format: 'A4'}),
-            filename: 'test.pdf'
+            filename: `${data.firstname}-${data.lastname}-${data.ref}.pdf`
         }
 
         await this.mailgunClient.messages.create(process.env.DOMAIN, {

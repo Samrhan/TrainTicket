@@ -5,7 +5,7 @@
       <mat-stepper #stepper [linear]="false">
         <mat-step [stepControl]="form">
           <form [formGroup]="form" class="form-group">
-            <ng-template matStepLabel>Complétez vos informations</ng-template>
+            <ng-template matStepLabel>Vérifiez ou complétez vos informations</ng-template>
             <div id="inputs">
               <mat-form-field appearance="outline">
                 <mat-label>Mail</mat-label>
@@ -35,21 +35,25 @@
                   Sélectionnez une adresse
                 </mat-error>
               </mat-form-field>
+              <p class="float-right text-muted font-size-15">
+                L'identité sera vérifiée à bord des trains.
+              </p>
             </div>
             <mat-card-actions>
               <button mat-button matStepperNext type="submit">Suivant</button>
             </mat-card-actions>
+
           </form>
         </mat-step>
-        <mat-step label="Vos options">
-          <ng-template matStepLabel>Vos options</ng-template>
-        </mat-step>
         <mat-step>
-          <ng-template matStepLabel>Confirmation</ng-template>
-          <p>You are now done.</p>
+          <ng-template matStepLabel>Récapitulatif</ng-template>
+          <p>Voyage de {{journey.sections[0].from}} vers {{journey.sections[journey.sections.length - 1].from}}
+            le {{journey.departure | amLocal | amDateFormat: 'DD/MM à HH:mm'}} </p>
+          <p> Le billet sera envoyé à {{form.value.firstname}} {{form.value.lastname}} via l'adresse
+            mail {{form.value.mail}}</p>
           <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button (click)="stepper.reset()" mat-button>Reset</button>
+            <button mat-button matStepperPrevious>Revenir</button>
+            <button (click)="book()" [disabled]="!form.valid" mat-button>Confirmer</button>
           </div>
         </mat-step>
       </mat-stepper>

@@ -35,7 +35,7 @@ module.exports = class Database {
     }
 
     async getUserById(id) {
-        const data = await this.connection.query('SELECT id, mail, lastname, firstname, birthdate, address FROM user WHERE id = ?', [id])
+        const data = await this.connection.query('SELECT id, mail, lastname, firstname, address FROM user WHERE id = ?', [id])
         const formatted_data = Database.formatData(data)
         if (formatted_data.length === 0) {
             throw new Error("Utilisateur Introuvable")
@@ -43,10 +43,10 @@ module.exports = class Database {
         return new User(formatted_data[0])
     }
 
-    async registerUser(mail, password, firstname, lastname, birthdate, address) {
+    async registerUser(mail, password, firstname, lastname, address) {
         if (!await this.checkUserExistence(mail)) {
             password = await bcrypt.hash(password, 10)
-            await this.connection.query('INSERT INTO user(mail, lastname, firstname, password, birthdate, address) VALUES (?,?,?,?,?,?)', [mail, lastname, firstname, password, birthdate, address])
+            await this.connection.query('INSERT INTO user(mail, lastname, firstname, password, address) VALUES (?,?,?,?,?)', [mail, lastname, firstname, password, address])
 
         } else {
             throw new Error("L'utilisateur existe déjà")

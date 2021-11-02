@@ -59,6 +59,7 @@ class Route {
 
     validateQuery(req, res) {
         this.res = res;
+        console.log(req.body)
 
         if (this.auth) {
             if (!req.session.userId) {
